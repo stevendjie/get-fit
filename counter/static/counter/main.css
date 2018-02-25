@@ -1,0 +1,120 @@
+body{
+    font-family: 'Raleway', sans-serif;
+    padding-top: 70px;
+}
+.navbar-brand{
+    font-family: 'Satisfy', cursive;
+}
+h1{
+    font-family: 'Cabin Sketch', cursive;
+}
+.button-panel{
+    margin-bottom: 20px;
+}
+input[type=checkbox] {
+  transform: scale(1.5);
+  position: relative;
+  top: 2px;
+  left: 3px;
+}
+.error{
+    color: red;
+}
+.card{
+    margin-bottom: 20px;
+}
+#main-dropdown{
+    position: relative;
+    right: 10px;
+}
+.card-btn,{
+    margin-left: 10px;
+}
+.btn{
+    margin-right: 10px;
+}
+.fa-arrow-circle-o-right{
+    margin-left: 5px;
+}
+.fa-plus, .fa-pencil, .fa-eye, .fa-trash-o{
+    margin-right: 5px;
+}
+a{
+    margin-left: 5px;
+}
+a:first-child{
+    margin-left: 0px;
+}
+.notAllowed:hover{
+    cursor: not-allowed !important;
+}
+.secondButton{
+    margin-left: 5px !important;
+}
+.no-margin{
+    margin: 0;
+}
+.right-align{
+    float:right;
+}
+.pad-left{
+    padding-left:5%;
+}
+.pad-right{
+    padding-right:5%;
+}
+.btn-more i{
+    margin-right: 0;
+}
+.btn-more{
+    margin-right: 0;
+    margin-left: 10px;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+}
+.hideable-panel{
+    display:none;
+}
+.isNegativeFalse{
+    color: red !important;
+}
+.isNegativeTrue{
+    color: green !important;
+}
+.grey{
+    color: grey !important;
+}
+.macro-info table{
+    font-size:1.3rem;
+    margin-bottom: 5px;
+}
+td{
+    padding-left: 3px;
+    padding-right: 3px;
+}
+.above-panel{
+    margin-bottom: 10px;
+}
+footer{
+    height: 50px;
+}
+.attribution{
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+#id_searchQuery{
+    width: 100%;
+    margin-bottom: 15px;
+}
+#searchResultsPanel{
+    width: 100%;
+}
+.no-margin-bottom{
+    margin-bottom: 0;
+}
+.equal-button-width a{
+    width: 36%;
+}
+.equal-button-width button{
+    width: 100%;
+}

@@ -1,0 +1,69 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>GetFit</title>
+    {% load static %}
+
+    <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cabin+Sketch" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link href="{% static 'counter/main.css' %}" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" type="image/png" sizes="16x16" href="{% static 'counter/favicon-16x16.png' %}">
+    <script src="https://use.fontawesome.com/642eb2946f.js"></script>
+</head>
+<body>
+    <div id="container">
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+                  <a class="navbar-brand" href="{% url 'counter:index' %}">GetFit</a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+
+                  <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav mr-auto">
+
+                    </ul>
+                      <ul class="navbar-nav navbar-right">
+                      {% if user.is_authenticated %}
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'counter:index' %}">{{user.username}}</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                      </li>
+                       {% else %}
+                          <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Create Account</a>
+                      </li>
+                          {% endif %}
+                    </ul>
+                  </div>
+                </nav>
+    </header>
+
+    <main role="main">
+        <div class="container">
+{% block body %}
+{% endblock %}
+        </div>
+    </main>
+    <footer class="footer bg-dark">
+      <div class="container attribution">
+        <span class="text-muted align-middle">Powered by <a href="">Nutritionix API</a></span>
+      </div>
+    </footer>
+    </div>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+<script src="{% static 'counter/main.js' %}"></script>
+</html>

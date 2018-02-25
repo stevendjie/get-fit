@@ -1,0 +1,237 @@
+{% extends 'counter/base.html' %}
+
+{% block body %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.level_tag }} alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+<div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center">
+            <h1>Goals</h1>
+        </div>
+        <div class="button-panel d-flex justify-content-center">
+            <a href="{% url 'counter:newGoal' %}"><button name="newGoal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add</button></a>
+            <a href="{% url 'counter:viewGoals' %}"><button name="editGoals" class="btn btn-dark"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</button></a>
+            <a href="{% url 'counter:viewGoals' %}"><button name="viewGoals" class="btn btn-dark"><i class="fa fa-eye" aria-hidden="true"></i>View</button></a>
+
+        </div>
+        <div class="d-flex justify-content-center">
+            <form action="{% url 'counter:index' %}" method="post">
+            {% csrf_token %}
+                <select name='dropdown' id="main-dropdown">
+            {% if hasGoal is not True %}
+                <option value="">----------------------</option>
+            {% elif hasActiveGoal is True %}
+                <option value="{{activeGoal.id}}">{{activeGoal.name}} (active)</option>
+            {% endif %}
+            {% for goal in allGoals %}
+                {% if goal.id is not activeGoal.id or hasActiveGoal is False %}
+                <option value="{{goal.id}}">{{goal.name}}</option>
+                {% endif %}
+            {% endfor %}
+                </select>
+            {% if hasGoal is True %}
+                <button name="submit" class="btn btn-primary">Set As Active</button>
+            {% endif %}
+            </form>
+            {% if hasActiveGoal %}
+            <a href="{% url 'counter:editGoal' activeGoal.id %}"><button name="editGoal" class="btn btn-dark"><i class="fa fa-pencil" aria-hidden="true"></i>Edit Active</button></a>
+            {% else %}
+            <a><button class="btn btn-secondary p-2 card-btn notAllowed"><i class="fa fa-pencil" aria-hidden="true"></i>Edit Active</button></a>
+            {% endif %}
+
+        </div>
+
+{% if hasGoal is True and hasActiveGoal is False %}
+    <div class="d-flex justify-content-center">
+        <p class="error">You have not set an active goal yet.</p>
+    </div>
+{% endif %}
+
+{% if hasGoal is True and hasActiveGoal is True%}
+        <div class="d-flex justify-content-center">
+    <div class="row">
+        <div class="col macro-info">
+            <div class="d-flex justify-content-center">
+                <h3>Macros: </h3><!-- rightside -->
+            </div>
+            <table>
+                <tr>
+                    <td>Calories</td>
+                    <td><span class="font-weight-bold">{{activeGoal.calories.normalize}}</span> -
+                <span class="font-weight-bold grey">{{currCalories}}</span> =
+                <span class="font-weight-bold isNegative{{isCalorieNegative}}">{{remCalories}}</span> cals</td>
+                </tr>
+                <tr>
+                    <td>Protein</td>
+                    <td><span class="font-weight-bold">{{activeGoal.protein.normalize}}</span> -
+                <span class="font-weight-bold grey">{{currProtein}}</span> =
+                <span class="font-weight-bold isNegative{{isProteinNegative}}">{{remProtein}}</span> grams
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>Carbohydrates</td>
+                    <td><span class="font-weight-bold">{{activeGoal.carbohydrates.normalize}}</span> -
+                <span class="font-weight-bold grey">{{currCarbs}}</span> =
+                <span class="font-weight-bold isNegative{{isCarbNegative}}">{{remCarbs}}</span> grams</td>
+                </tr>
+                <tr>
+                    <td>Fats</td>
+                    <td><span class="font-weight-bold">{{activeGoal.fats.normalize}}</span> -
+                <span class="font-weight-bold grey">{{currFats}}</span> =
+                <span class="font-weight-bold isNegative{{isFatNegative}}">{{remFats}}</span> grams</td>
+                </tr>
+            </table>
+
+            </div>
+        </div>
+    </div>
+{% endif %}
+    </div>
+<!-- if no goals ---->
+{% if hasGoal is not True %}
+    <div class="d-flex justify-content-center">
+        <p class="error">You have not added a goal yet.</p>
+    </div>
+
+<!-- else, there are goals and an active goal -->
+
+{% endif %}
+    <!--</div>-->
+    <div class="col  equal-button-width">
+        <div class="d-flex justify-content-center">
+            <h1>Saved Meals</h1>
+        </div>
+        <div class="button-panel d-flex justify-content-center">
+            <a href="{% url 'counter:newMeal' %}"><button name="newMeal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add manually</button></a>
+        </div>
+        <div class="button-panel d-flex justify-content-center">
+            <a href="{% url 'counter:getMealDatabase' %}"><button name="newMeal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add from database</button></a>
+        </div>
+        <div class="button-panel d-flex justify-content-center">
+            <a href="{% url 'counter:viewMeals' %}"><button name="viewMeals" class="btn btn-dark"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</button></a>
+        </div>
+        <div class="button-panel d-flex justify-content-center">
+            <a href="{% url 'counter:viewMeals' %}"><button name="viewMeals" class="btn btn-dark"><i class="fa fa-eye" aria-hidden="true"></i>View</button></a>
+        </div>
+    </div>
+</div>
+<div class="row above-panel">
+    <div class="col">
+        <div class="d-flex justify-content-center">
+            <h1 class="no-margin">Today's Log</h1>
+        </div>
+        <div class="d-flex justify-content-center">
+            <span class="date">Loading...</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card border-secondary">
+            <h3 class="card-header d-flex justify-content-end">
+                <span class="mr-auto p-2">Breakfast</span>
+                <a href="{% url 'counter:newMealBreakfast' %}">
+                    <button class="btn btn-dark p-2 card-btn"><i class="fa fa-plus" aria-hidden="true"></i>Meal</button>
+                </a>
+                <a href="{% url 'counter:newEntryBreakfast' %}">
+                    <button class="btn btn-dark p-2 card-btn"><i class="fa fa-plus" aria-hidden="true"></i>Entry</button>
+                </a>
+            </h3>
+        <div class="card-body text-secondary">
+          <ul class="list-group list-group-flush">
+              {% for entry in breakfastEntries %}
+              <li class="list-group-item"><span>{{ entry.meal.name }}</span><span class="right-align"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+              {% endfor %}
+          </ul>
+        </div>
+    </div>
+    </div>
+        <div class="col">
+        <div class="card border-secondary">
+            <h3 class="card-header d-flex justify-content-end">
+                <span class="mr-auto p-2">Lunch</span>
+                <a href="{% url 'counter:newMealLunch' %}">
+                    <button class="btn btn-dark p-2 card-btn"><i class="fa fa-plus" aria-hidden="true"></i>Meal</button>
+                </a>
+                <a href="{% url 'counter:newEntryLunch' %}">
+                    <button class="btn btn-dark p-2 card-btn"><i class="fa fa-plus" aria-hidden="true"></i>Entry</button>
+                </a>
+            </h3>
+        <div class="card-body text-secondary">
+          <ul class="list-group list-group-flush">
+              {% for entry in lunchEntries %}
+              <li class="list-group-item"><span>{{ entry.meal.name }}</span><span class="right-align"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+              {% endfor %}
+          </ul>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card border-secondary">
+            <h3 class="card-header d-flex justify-content-end">
+                <span class="mr-auto p-2">Dinner</span>
+                <a href="{% url 'counter:newMealDinner' %}">
+                    <button class="btn btn-dark p-2 card-btn"><i class="fa fa-plus" aria-hidden="true"></i>Meal</button>
+                </a>
+                <a href="{% url 'counter:newEntryDinner' %}">
+                    <button class="btn btn-dark p-2 card-btn"><i class="fa fa-plus" aria-hidden="true"></i>Entry</button>
+                </a>
+            </h3>
+        <div class="card-body text-secondary">
+          <ul class="list-group list-group-flush">
+              {% for entry in dinnerEntries %}
+              <li class="list-group-item">
+                  <span>{{ entry.meal.name }}</span>
+                  <span class="right-align">
+                      <strong>{{ entry.amount.normalize }}</strong> {{entry.units}}<button class="btn btn-link btn-more"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                  </span>
+              </li>
+              <ul class="list-group list-group-flush hideable-panel">
+                  <li class="list-group-item"><span class="pad-left">Calories</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Protein</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Carbohydrates</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Fats</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+              </ul>
+              {% endfor %}
+          </ul>
+        </div>
+    </div>
+    </div>
+        <div class="col">
+        <div class="card border-secondary">
+            <h3 class="card-header d-flex justify-content-end">
+                <span class="mr-auto p-2">Snack</span>
+                <a href="{% url 'counter:newMealSnack' %}">
+                    <button class="btn btn-dark p-2 card-btn"><i class="fa fa-plus" aria-hidden="true"></i>Meal</button>
+                </a>
+                <a href="{% url 'counter:newEntrySnack' %}">
+                    <button class="btn btn-dark p-2 card-btn"><i class="fa fa-plus" aria-hidden="true"></i>Entry</button>
+                </a>
+            </h3>
+        <div class="card-body text-secondary">
+          <ul class="list-group list-group-flush">
+              {% for entry in snackEntries %}
+              <li class="list-group-item"><span>{{ entry.meal.name }}</span><span class="right-align"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+              {% endfor %}
+          </ul>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+</div>
+
+
+{% endblock %}

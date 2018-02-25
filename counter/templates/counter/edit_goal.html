@@ -1,0 +1,15 @@
+{% extends 'counter/base.html' %}
+
+{% block body %}
+<h1>Edit Goal</h1>
+<div class="button-panel d-flex flex-row-reverse">
+    <a href="{% url 'counter:index' %}" class="secondButton"><button name="newGoal" class="btn btn-light">To Dashboard<i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button></a>
+    <a href="{% url 'counter:viewGoals' %}"><button name="newGoal" class="btn btn-light">To Goals<i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button></a>
+</div>
+<form action="{% url 'counter:editGoal' toBeEdited.id %}" method="post">
+        {% csrf_token %}
+{{ form.as_p }}
+
+<button name="submit" class="btn btn-primary">Save</button>
+</form>
+{% endblock %}

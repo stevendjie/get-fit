@@ -1,0 +1,42 @@
+{% extends 'counter/base.html' %}
+
+{% block body %}
+<h1>Meal Information</h1>
+<div class="button-panel d-flex justify-content-between">
+    <a href="{% url 'counter:newMeal' %}"><button name="newGoal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add</button></a>
+    <a href="{% url 'counter:index' %}"><button name="newGoal" class="btn btn-light">To Dashboard<i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button></a>
+</div>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.level_tag }} alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+{% if hasMeal is not True %}
+<div class="d-flex justify-content-center">
+    <p class="error">You have no meals yet.</p>
+</div>
+{% else %}
+{% for meal in allMeals %}
+<div class="card border-secondary">
+    <h3 class="card-header d-flex justify-content-end">
+        <span class="mr-auto p-2">{{meal.name}}</span>
+        <a href="{% url 'counter:editMeal' meal.id %}"><button class="btn btn-dark p-2 card-btn"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</button></a>
+        <a href="{% url 'counter:deleteMeal' meal.id %}"><button class="btn btn-danger p-2 card-btn"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</button></a>
+    </h3>
+    <div class="card-body text-secondary">
+        <p class="card-text">Size of one serving: <span class="font-weight-bold">{{meal.servingSize.normalize}}</span>&nbsp;<span>{{meal.units}}</span></p>
+        <p class="card-text">Calories per serving: <span class="font-weight-bold">{{meal.caloriesPerServing.normalize}}</span> calories</p>
+        <p class="card-text">Protein per serving: <span class="font-weight-bold">{{meal.proteinPerServing.normalize}}</span> grams</p>
+        <p class="card-text">Carbohydrates per serving: <span class="font-weight-bold">{{meal.carbohydratesPerServing.normalize}}</span> grams</p>
+        <p class="card-text">Fats per serving: <span class="font-weight-bold">{{meal.fatsPerServing.normalize}}</span> grams</p>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock %}

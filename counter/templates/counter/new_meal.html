@@ -1,0 +1,31 @@
+{% extends 'counter/base.html' %}
+
+{% block body %}
+<div class="row">
+        <div class="col-9">
+                <h1>Add Meal</h1>
+        </div>
+        <div class="col-3 d-flex align-items-center flex-column">
+                <div class="button-panel d-flex flex-row-reverse mt-auto p-2">
+                    <a href="{% url 'counter:index' %}" class="secondButton"><button name="newGoal" class="btn btn-light">To Dashboard<i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i><i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button></a>
+                    <a href="{% url 'counter:viewMeals' %}"><button name="newGoal" class="btn btn-light">To Meals<i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button></a>
+                </div>
+        </div>
+</div>
+{% if type == "Breakfast" %}
+<form action="{% url 'counter:newMealBreakfast' %}" method="post" id="addMeal">
+{% elif type == "Lunch" %}
+<form action="{% url 'counter:newMealLunch' %}" method="post" id="addMeal">
+{% elif type == "Dinner" %}
+<form action="{% url 'counter:newMealDinner' %}" method="post" id="addMeal">
+{% elif type == "Snack" %}
+<form action="{% url 'counter:newMealSnack' %}" method="post" id="addMeal">
+{% endif %}
+        {% csrf_token %}
+{{ form.as_p }}
+
+<button name="SaveAndAddEntry" class="btn btn-primary">Save and Add Entry</button>
+<button name="SaveAndReturn" class="btn btn-dark">Save and Go Back</button>
+</form>
+
+{% endblock %}

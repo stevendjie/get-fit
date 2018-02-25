@@ -1,0 +1,69 @@
+{% extends 'counter/base.html' %}
+
+{% block body %}
+<h1>My Goals</h1>
+<div class="button-panel d-flex justify-content-between">
+    <a href="{% url 'counter:newGoal' %}"><button name="newGoal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add</button></a>
+    <a href="{% url 'counter:index' %}"><button name="newGoal" class="btn btn-light">To Dashboard<i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></button></a>
+
+</div>
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.level_tag }} alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+{% if hasGoal is not True %}
+<div class="d-flex justify-content-center">
+    <p class="error">You have no goals yet.</p>
+</div>
+{% else %}
+{% if hasActiveGoal is True %}
+<div class="card border-success">
+    <h3 class="card-header d-flex justify-content-end">
+        <span class="mr-auto p-2">{{activeGoal.name}}</span>
+        <a href="{% url 'counter:editGoal' activeGoal.id %}"><button class="btn btn-dark p-2 card-btn"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</button></a>
+        <span><button class="btn btn-secondary p-2 card-btn notAllowed">Set As Active</button></span>
+        <a href="{% url 'counter:deleteGoal' activeGoal.id %}"><button class="btn btn-danger p-2 card-btn"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</button></a>
+    </h3>
+    <div class="card-body text-success">
+        <p class="card-text">Calories: <span class="font-weight-bold">{{activeGoal.calories.normalize}}</span> calories</p>
+        <p class="card-text">Protein: <span class="font-weight-bold">{{activeGoal.protein.normalize}}</span> grams</p>
+        <p class="card-text">Carbohydrates: <span class="font-weight-bold">{{activeGoal.carbohydrates.normalize}}</span> grams</p>
+        <p class="card-text">Fats: <span class="font-weight-bold">{{activeGoal.fats.normalize}}</span> grams</p>
+        <div class="d-flex justify-content-end">
+            <span class="badge badge-default">Last Modified: {{activeGoal.dateAdded}}</span>
+        </div>
+
+    </div>
+</div>
+{% endif %}
+{% for goal in allGoals %}
+{% if goal.isActive is not True %}
+<div class="card border-secondary">
+    <h3 class="card-header d-flex justify-content-end">
+        <span class="mr-auto p-2">{{goal.name}}</span>
+        <a href="{% url 'counter:editGoal' goal.id %}"><button class="btn btn-dark p-2 card-btn"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</button></a>
+        <form action="{% url 'counter:viewGoals' %}" method="post">{% csrf_token %}<button class="btn btn-primary p-2 card-btn" name="activeButton" value="{{goal.id}}">Set As Active</button></form>
+        <a href="{% url 'counter:deleteGoal' goal.id %}"><button class="btn btn-danger p-2 card-btn"><i class="fa fa-trash-o" aria-hidden="true"></i>Delete</button></a>
+    </h3>
+    <div class="card-body text-secondary">
+        <p class="card-text">Calories: <span class="font-weight-bold">{{goal.calories.normalize}}</span> calories</p>
+        <p class="card-text">Protein: <span class="font-weight-bold">{{goal.protein.normalize}}</span> grams</p>
+        <p class="card-text">Carbohydrates: <span class="font-weight-bold">{{goal.carbohydrates.normalize}}</span> grams</p>
+        <p class="card-text">Fats: <span class="font-weight-bold">{{goal.fats.normalize}}</span> grams</p>
+        <div class="d-flex justify-content-end">
+            <span class="badge badge-default">Last Modified: {{goal.dateAdded}}</span>
+        </div>
+
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% endblock %}

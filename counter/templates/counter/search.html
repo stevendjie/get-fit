@@ -1,0 +1,51 @@
+{% extends 'counter/base.html' %}
+
+{% block body %}
+<div class="row">
+        <div class="col">
+            <div class="d-flex align-items-center flex-column">
+                <h1>Add Meal from Database</h1>
+            </div>
+        </div>
+</div>
+<div class="row">
+    <div class="input-group">
+        <form action="{% url 'counter:getMealDatabase' %}" method="post" style="width:100% !important;">{% csrf_token %}
+            {{ searchForm }}
+            <button name="search" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+</div>
+
+    {% for meal in meals %}
+<div class="row">
+    <div class="card border-secondary" id="searchResultsPanel">
+            <h3 class="card-header d-flex justify-content-end">
+                <span class="mr-auto p-2">{{meal.fields.item_name}}, {{meal.fields.brand_name}}</span>
+            </h3>
+        <div class="card-body text-secondary">
+          <ul class="list-group list-group-flush">
+
+              <li class="list-group-item"><span>Size of one serving</span><span class="right-align"><strong>{{meal.fields.nf_serving_weight_grams}}</strong> grams</span></li>
+
+              <li class="list-group-item"><span>Calories</span><span class="right-align"><strong>{{meal.fields.nf_calories}}</strong> calories</span></li>
+
+              <li class="list-group-item"><span>Protein</span><span class="right-align"><strong>{{meal.fields.nf_protein}}</strong> grams</span></li>
+
+              <li class="list-group-item"><span>Carbohydrates</span><span class="right-align"><strong>{{meal.fields.nf_total_carbohydrate}}</strong> grams</span></li>
+
+              <li class="list-group-item"><span>Fats</span><span class="right-align"><strong>{{meal.fields.nf_total_fat}}</strong> grams</span></li>
+
+              <form action="{% url 'counter:newMealDatabase' meal.fields.item_id %}" method="post" class="no-margin-bottom">{% csrf_token %}
+              <li class="list-group-item">
+                  <button class="btn btn-primary" name="SaveAndEdit">Save and Edit</button>
+                  <button class="btn btn-dark" name="Save">Save</button></li>
+              </form>
+          </ul>
+        </div>
+    </div>
+</div>
+
+    {% endfor %}
+
+{% endblock %}
