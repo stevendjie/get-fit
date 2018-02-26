@@ -47,12 +47,12 @@ $( function() {
     $(".btn-more").on("click", function() {
         var $this = $(this);
 		var $i = $this.find($("i"));
-        if ($i.hasClass("fa-plus")){
-            $i.removeClass("fa-plus");
-            $i.addClass("fa-minus");
+        if ($i.hasClass("fa-angle-double-down")){
+            $i.removeClass("fa-angle-double-down");
+            $i.addClass("fa-angle-double-up");
         } else{
-            $i.removeClass("fa-minus");
-            $i.addClass("fa-plus");
+            $i.removeClass("fa-angle-double-up");
+            $i.addClass("fa-angle-double-down");
         }
 		$this.parent().parent().next().slideToggle();
 

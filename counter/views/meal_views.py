@@ -6,11 +6,12 @@ from counter.models import Meal, MealForm, Entry, SearchForm
 from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from counter.api import API
 import sys
 import requests
 
-#APIKEY AND ID HERE
-#
+APIKEY = API.key
+APIID = API.id
 
 APIENDPOINT = ("https://api.nutritionix.com/v1_1/")
 SEARCH = "search/"
@@ -20,7 +21,7 @@ RESULTFORMAT = "?results=0%3A20"
 FIELDS = "&fields=item_name%2Cbrand_name%2Citem_id%2Cbrand_id%2Cnf_serving_weight_grams%2Cnf_total_fat%2Cnf_protein%2Cnf_total_carbohydrate%2Cnf_calories"
 IDSTRING = ""
 ID = "id="
-APIURL = "&appId="+APPID + "&appKey=" + APPKEY
+APIURL = "&appId="+APIID + "&appKey=" + APIKEY
 
 class NewMeal(LoginRequiredMixin, CreateView):
     form_class = MealForm

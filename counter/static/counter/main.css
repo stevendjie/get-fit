@@ -1,6 +1,8 @@
 body{
     font-family: 'Raleway', sans-serif;
     padding-top: 70px;
+    padding-bottom: 70px;
+    position: relative;
 }
 .navbar-brand{
     font-family: 'Satisfy', cursive;
@@ -76,10 +78,10 @@ a:first-child{
     display:none;
 }
 .isNegativeFalse{
-    color: red !important;
+    color: green !important;
 }
 .isNegativeTrue{
-    color: green !important;
+    color: red !important;
 }
 .grey{
     color: grey !important;
@@ -96,7 +98,10 @@ td{
     margin-bottom: 10px;
 }
 footer{
-    height: 50px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 .attribution{
     padding-top: 15px;
@@ -117,4 +122,14 @@ footer{
 }
 .equal-button-width button{
     width: 100%;
+}
+.entry-button{
+    padding-right: 0;
+    padding-left: 0.25rem;
+    margin-right: 0 !important;
+}
+.delete{
+    position:relative;
+    bottom: 1px;
+    padding-left: 0 !important;
 }

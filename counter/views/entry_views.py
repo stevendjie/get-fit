@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.views.generic.edit import CreateView
 from counter.models import Goal, GoalForm, Entry, EntryForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 class NewEntry(LoginRequiredMixin, CreateView):
     form_class = EntryForm
@@ -60,3 +61,29 @@ class NewEntrySnack(NewEntry):
         initial = super(NewEntry, self).get_initial()
         initial['mealType'] = Entry.SNACK
         return initial
+
+@login_required
+def editEntry(request, pk):
+    toBeEdited = Entry.objects.get(id=pk)
+    if request.method == 'GET':
+        form = EntryForm(instance=toBeEdited)
+    else:
+        form = EntryForm(instance=toBeEdited, data=request.POST)
+        if form.is_valid():
+            editedEntry = form.save(commit=False)
+            if not editedEntry.caloriesPerServing:
+                editedEntry.caloriesPerServing = 0.00
+            if not editedEntry.carbohydratesPerServing:
+                editedEntry.carbohydratesPerServing = 0.00
+            if not editedEntry.proteinPerServing:
+                editedEntry.proteinPerServing = 0.00
+            if not editedEntry.fatsPerServing:
+                editedEntry.fatsPerServing = 0.00
+            editedEntry.save()
+            messages.success(request, "Entry successfully edited.")
+            return redirect('counter:index')
+    context = {
+        'form': form,
+        'toBeEdited': toBeEdited
+    }
+    return render(request, 'counter/edit_entry.html', context=context)

@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^goals/$', views.viewGoals, name='viewGoals'),
     url(r'^delete_goal/(?P<pk>\d+)/$', views.deleteGoal, name='deleteGoal'),
     url(r'^edit_goal/(?P<pk>\d+)/$', views.editGoal, name='editGoal'),
+    url(r'^edit_entry/(?P<pk>\d+)/$', views.editEntry, name='editEntry'),
     url(r'^new_meal/lunch/$', views.NewMealLunch.as_view(), name='newMealLunch'),
     url(r'^new_meal/$', views.NewMeal.as_view(), name='newMeal'),
     url(r'^meals/$', views.viewMeals, name='viewMeals'),

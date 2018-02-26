@@ -1,6 +1,19 @@
 {% extends 'counter/base.html' %}
 
 {% block body %}
+<div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center">
+            <h1>Goals</h1>
+        </div>
+        <div class="button-panel d-flex justify-content-center">
+            <a href="{% url 'counter:newGoal' %}"><button name="newGoal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add</button></a>
+            <a href="{% url 'counter:viewGoals' %}"><button name="editGoals" class="btn btn-dark"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</button></a>
+            <a href="{% url 'counter:viewGoals' %}"><button name="viewGoals" class="btn btn-dark"><i class="fa fa-eye" aria-hidden="true"></i>View</button></a>
+
+        </div>
+    </div>
+</div>
 {% if messages %}
     {% for message in messages %}
         <div class="alert alert-{{ message.level_tag }} alert-dismissible fade show" role="alert">
@@ -13,15 +26,7 @@
 {% endif %}
 <div class="row">
     <div class="col">
-        <div class="d-flex justify-content-center">
-            <h1>Goals</h1>
-        </div>
-        <div class="button-panel d-flex justify-content-center">
-            <a href="{% url 'counter:newGoal' %}"><button name="newGoal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add</button></a>
-            <a href="{% url 'counter:viewGoals' %}"><button name="editGoals" class="btn btn-dark"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</button></a>
-            <a href="{% url 'counter:viewGoals' %}"><button name="viewGoals" class="btn btn-dark"><i class="fa fa-eye" aria-hidden="true"></i>View</button></a>
 
-        </div>
         <div class="d-flex justify-content-center">
             <form action="{% url 'counter:index' %}" method="post">
             {% csrf_token %}
@@ -106,22 +111,36 @@
 
 {% endif %}
     <!--</div>-->
-    <div class="col  equal-button-width">
-        <div class="d-flex justify-content-center">
-            <h1>Saved Meals</h1>
+    <div class="col ">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+              google.charts.load('current', {'packages':['corechart']});
+              google.charts.setOnLoadCallback(drawChart);
+
+              function drawChart() {
+
+                var data = google.visualization.arrayToDataTable([
+                  ['Macros', 'Grams'],
+                  ['Protein (g)',     {{ currProtein }}],
+                  ['Carbohydrates (g)',      {{currCarbs }}],
+                  ['Fats (g)',  {{currFats}}],
+                ]);
+
+                var options = {
+                  title: "Today's Macros",
+                  chartArea:{left:70,top:20,width:'100%',height:'100%'},
+                  fontSize: 15
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('pie-chart'));
+
+                chart.draw(data, options);
+              }
+        </script>
+        <div id="pie-chart">
+
         </div>
-        <div class="button-panel d-flex justify-content-center">
-            <a href="{% url 'counter:newMeal' %}"><button name="newMeal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add manually</button></a>
-        </div>
-        <div class="button-panel d-flex justify-content-center">
-            <a href="{% url 'counter:getMealDatabase' %}"><button name="newMeal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add from database</button></a>
-        </div>
-        <div class="button-panel d-flex justify-content-center">
-            <a href="{% url 'counter:viewMeals' %}"><button name="viewMeals" class="btn btn-dark"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</button></a>
-        </div>
-        <div class="button-panel d-flex justify-content-center">
-            <a href="{% url 'counter:viewMeals' %}"><button name="viewMeals" class="btn btn-dark"><i class="fa fa-eye" aria-hidden="true"></i>View</button></a>
-        </div>
+
     </div>
 </div>
 <div class="row above-panel">
@@ -149,7 +168,18 @@
         <div class="card-body text-secondary">
           <ul class="list-group list-group-flush">
               {% for entry in breakfastEntries %}
-              <li class="list-group-item"><span>{{ entry.meal.name }}</span><span class="right-align"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                            <li class="list-group-item">
+                  <span>{{ entry.meal.name }}</span>
+                  <span class="right-align">
+                      <strong>{{ entry.amount.normalize }}</strong> {{entry.units}}<button class="btn btn-link btn-more"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                  </span>
+              </li>
+              <ul class="list-group list-group-flush hideable-panel">
+                  <li class="list-group-item"><span class="pad-left">Calories</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Protein</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Carbohydrates</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Fats</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+              </ul>
               {% endfor %}
           </ul>
         </div>
@@ -169,7 +199,18 @@
         <div class="card-body text-secondary">
           <ul class="list-group list-group-flush">
               {% for entry in lunchEntries %}
-              <li class="list-group-item"><span>{{ entry.meal.name }}</span><span class="right-align"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                            <li class="list-group-item">
+                  <span>{{ entry.meal.name }}</span>
+                  <span class="right-align">
+                      <strong>{{ entry.amount.normalize }}</strong> {{entry.units}}<button class="btn btn-link btn-more"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+                  </span>
+              </li>
+              <ul class="list-group list-group-flush hideable-panel">
+                  <li class="list-group-item"><span class="pad-left">Calories</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Protein</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Carbohydrates</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Fats</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+              </ul>
               {% endfor %}
           </ul>
         </div>
@@ -222,11 +263,50 @@
         <div class="card-body text-secondary">
           <ul class="list-group list-group-flush">
               {% for entry in snackEntries %}
-              <li class="list-group-item"><span>{{ entry.meal.name }}</span><span class="right-align"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+              <li class="list-group-item">
+                  <span>{{ entry.meal.name }}
+                      <button class="btn btn-link entry-button">
+                          <a href="{% url 'counter:editEntry' entry.id %}"> <i class="fa fa-edit"></i></a>
+
+                      </button>
+                      <button class="btn btn-link entry-button delete">
+                          <a href="{% url 'counter:editEntry' entry.id %}"> <i class="fa fa-trash"></i></a>
+                      </button>
+                  </span>
+                  <span class="right-align">
+                      <strong>{{ entry.amount.normalize }}</strong> {{entry.units}}<button class="btn btn-link btn-more"><i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
+                  </span>
+              </li>
+              <ul class="list-group list-group-flush hideable-panel">
+                  <li class="list-group-item"><span class="pad-left">Calories</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Protein</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Carbohydrates</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+                <li class="list-group-item"><span class="pad-left">Fats</span><span class="right-align pad-right"><strong>{{ entry.amount.normalize }}</strong> {{entry.units}}</span></li>
+              </ul>
               {% endfor %}
           </ul>
         </div>
     </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col  equal-button-width">
+        <div class="d-flex justify-content-center">
+            <h1>Meals</h1>
+        </div>
+        <div class="button-panel d-flex justify-content-center">
+            <a href="{% url 'counter:newMeal' %}"><button name="newMeal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add manually</button></a>
+        </div>
+        <div class="button-panel d-flex justify-content-center">
+            <a href="{% url 'counter:getMealDatabase' %}"><button name="newMeal" class="btn btn-dark"><i class="fa fa-plus" aria-hidden="true"></i>Add from database</button></a>
+        </div>
+        <div class="button-panel d-flex justify-content-center">
+            <a href="{% url 'counter:viewMeals' %}"><button name="viewMeals" class="btn btn-dark"><i class="fa fa-pencil" aria-hidden="true"></i>Edit</button></a>
+        </div>
+        <div class="button-panel d-flex justify-content-center">
+            <a href="{% url 'counter:viewMeals' %}"><button name="viewMeals" class="btn btn-dark"><i class="fa fa-eye" aria-hidden="true"></i>View</button></a>
+        </div>
+
     </div>
 </div>
 

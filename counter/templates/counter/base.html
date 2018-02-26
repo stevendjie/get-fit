@@ -11,52 +11,53 @@
     <link href="{% static 'counter/main.css' %}" rel="stylesheet" type="text/css">
     <link rel="shortcut icon" type="image/png" sizes="16x16" href="{% static 'counter/favicon-16x16.png' %}">
     <script src="https://use.fontawesome.com/642eb2946f.js"></script>
+
 </head>
 <body>
     <div id="container">
-    <header>
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-                  <a class="navbar-brand" href="{% url 'counter:index' %}">GetFit</a>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
+        <header>
+            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+                      <a class="navbar-brand" href="{% url 'counter:index' %}">GetFit</a>
+                      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                      </button>
 
-                  <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav mr-auto">
+                      <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <ul class="navbar-nav mr-auto">
 
-                    </ul>
-                      <ul class="navbar-nav navbar-right">
-                      {% if user.is_authenticated %}
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'counter:index' %}">{{user.username}}</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-                      </li>
-                       {% else %}
+                        </ul>
+                          <ul class="navbar-nav navbar-right">
+                          {% if user.is_authenticated %}
                           <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Login</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Create Account</a>
-                      </li>
-                          {% endif %}
-                    </ul>
-                  </div>
-                </nav>
-    </header>
+                            <a class="nav-link" href="{% url 'counter:index' %}">{{user.username}}</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                          </li>
+                           {% else %}
+                              <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">Create Account</a>
+                          </li>
+                              {% endif %}
+                        </ul>
+                      </div>
+                    </nav>
+        </header>
 
-    <main role="main">
-        <div class="container">
-{% block body %}
-{% endblock %}
-        </div>
-    </main>
-    <footer class="footer bg-dark">
-      <div class="container attribution">
-        <span class="text-muted align-middle">Powered by <a href="">Nutritionix API</a></span>
-      </div>
-    </footer>
+        <main role="main">
+            <div class="container">
+    {% block body %}
+    {% endblock %}
+            </div>
+        </main>
+        <footer class="footer bg-dark">
+          <div class="container attribution">
+            <span class="text-muted align-middle">Powered by <a href="https://www.nutritionix.com/business/api" target="_blank" >Nutritionix API</a></span>
+          </div>
+        </footer>
     </div>
 </body>
 <script
