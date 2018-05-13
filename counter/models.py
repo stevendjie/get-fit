@@ -95,7 +95,7 @@ class Entry(models.Model):
         default=GR,
         blank=False,
     )
-    dateTimeAdded = models.DateTimeField(auto_now_add=True)
+    dateTimeAdded = models.DateTimeField(auto_now_add=False, null=False)
     BREAKFAST = 'breakfast'
     LUNCH = 'lunch'
     DINNER = 'dinner'

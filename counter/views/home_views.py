@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from counter.models import Goal, GoalForm, Entry, Meal
 from django.contrib.auth.decorators import login_required
+from datetime import datetime, date
+import sys
 
 def toBase(toConvert, toConvertUnits, stateOfOunces=None):
     solidUnits = [Entry.GR, Entry.KG, Entry.LB]
@@ -35,6 +37,14 @@ def toBase(toConvert, toConvertUnits, stateOfOunces=None):
 @login_required
 def index(request):
     if request.method == 'GET':
+        entries = Entry.objects.all()
+        for entry in entries:
+            print (entry.dateTimeAdded, file=sys.stderr)
+            print ("-----", file=sys.stderr)
+            print (datetime.now(), file=sys.stderr)
+            if entry.dateTimeAdded.date() != date.today():
+                entry.delete()
+
         hasGoal = True
         hasActiveGoal = True
         allGoals = Goal.objects.all()
@@ -61,8 +71,6 @@ def index(request):
         if hasActiveGoal:
             context.update({'activeGoal' : activeGoal})
 
-        entries = Entry.objects.all()
-
         currCalories = 0
         currCarbs = 0
         currProtein = 0
@@ -88,19 +96,19 @@ def index(request):
         remCalories = float(activeGoal.calories) - currCalories
         if remCalories < 0:
             isCalorieNegative = True
-            remCalories *= -1;
+            remCalories *= -1
         remProtein = float(activeGoal.protein) - currProtein
         if remProtein < 0:
             isProteinNegative = True
-            remProtein *= -1;
+            remProtein *= -1
         remCarbs = float(activeGoal.carbohydrates) - currCarbs
         if remCarbs < 0:
             isCarbNegative = True
-            remCarbs *= -1;
+            remCarbs *= -1
         remFats = float(activeGoal.fats) - currFats
         if remFats < 0:
             isFatNegative = True
-            remFats *= -1;
+            remFats *= -1
 
         context.update(
             {'currCalories': int(round(currCalories)),
@@ -117,6 +125,8 @@ def index(request):
              'remFats': int(round(remFats)),
              }
         )
+
+
 
         return render(request, 'counter/index.html', context=context)
     else:
